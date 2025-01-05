@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { AccessAlarmOutlined, CreditScoreOutlined, ElectricBolt, WorkspacePremiumOutlined } from "@mui/icons-material";
-import { Box, Divider, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 
 export default function IconSection ()
 {

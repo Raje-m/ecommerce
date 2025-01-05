@@ -4,12 +4,11 @@ import { Box, Button, Card, CardActions, CardContent, Container, Dialog, IconBut
 import { useState } from 'react'
 import CardDetails from './CardDetails';
 import { useGetProductByNameQuery } from '../../redux/fetchProducts';
+import LinerProgress from '../LinerProgress';
 
 export default function Content ()
 {
-  // const allProduct = 'products?populate=*'
-  // const menProduct = `products?populate=*&[filters][category][$eq]=men`
-  // const womenProduct = `products?populate=*&[filters][category][$eq]=women`
+
   const jeweleryProduct = `/category/jewelery`
   const allProduct = ''
   const electronicsProduct = `/category/electronics`
@@ -22,12 +21,7 @@ export default function Content ()
   {
     console.log( error );
   }
-  if ( data )
-  {
-    console.log( data );
 
-
-  }
   const [ isOpen, setIsOpen ] = useState( false )
   const [ itemSelect, setItemSelect ] = useState( {} )
   const theme = useTheme()
@@ -49,7 +43,6 @@ export default function Content ()
   {
     let descAfter = d.split( " " )
     descAfter = descAfter.length > 19 ? descAfter.slice( 0, 20 ) : descAfter
-    console.log( descAfter );
 
     return descAfter.join( ' ' )
   }
@@ -87,33 +80,20 @@ export default function Content ()
         </ToggleButtonGroup>
       </Stack>
       <Stack direction={ 'row' } gap={ 2 } alignItems={ 'center' } flexWrap={ 'wrap' } flexGrow={ 1 } justifyContent={ 'space-around' } my={ 5 }  >
+      
         { isLoading ? (
-          <Typography variant={ 'h1' }>***************************
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            #####################################
-          </Typography>
+          <LinerProgress/>
         ) : data && data.map( ele =>
         {
           return (
             <Card key={ ele.id } sx={ { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflowY: 'auto', maxWidth: 333, maxHeight: '550px', minHeight: '550px', transition: 'all .9s', ':hover .cardImg': { scale: '1.1', rotate: '5deg', transition: '.5s' } } }>
-              {/* <CardMedia
 
-                component="img"
-                alt="green iguana"
-                height="277"
-                image={ ele.image }
-                
-              /> */}
               <Box display={ 'flex' } alignItems={ 'center' } justifyContent={ 'center' } p={ 1 }>
                 <img className='cardImg' height={ '277px' } width={ '100%' } src={ ele.image } />
               </Box>
 
               <CardContent   >
-                {/* <Stack alignItems={'center'} justifyContent={'space-between'}> */ }
+              
 
                 <Stack direction={ 'row' } alignItems={ 'center' } justifyContent={ 'space-between' }>
                   <Typography variant="h6" lineHeight={ 1.1 } component="div">
@@ -131,7 +111,6 @@ export default function Content ()
                 </ Tooltip >
                 <Typography flexGrow={ 1 }></Typography>
 
-                {/* </Stack> */ }
 
               </CardContent>
               <CardActions sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }>
