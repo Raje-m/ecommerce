@@ -60,6 +60,7 @@ export default function Content ()
           exclusive
           onChange={ handleAlignment }
           aria-label="text alignment"
+          sx={{display:'flex',justifyContent:'center',alignItems:'center',flexWrap:'wrap ', gap:1,}}
         >
           <ToggleButton className='toggleEle' value={ allProduct } sx={ { color: theme.palette.text.primary } } aria-label="left aligned" >
             All Products

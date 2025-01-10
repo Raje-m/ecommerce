@@ -14,8 +14,8 @@ export default function Header2 ()
   },
 }));
   return (
-    <Container sx={ { display: "flex", alignItems: "center",justifyContent:"space-between",my:2 } }>
-      <Stack alignItems={"center"}>
+    <Container sx={ { display: "flex", alignItems: "center",justifyContent:"space-between",my:2,flexDirection:{xs:'column',sm:'row'},gap:1 } }>
+      <Stack alignItems={"center"} >
         <ShoppingCartOutlinedIcon sx={ { fontSize: '16px' } } />
         <Typography variant="body2">E-commercy</Typography>
       </Stack>
