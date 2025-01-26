@@ -22,7 +22,7 @@ export default function CardDetails ( {cardData}  )
         <Box display={'flex'} alignItems={"center"} justifyContent={'center'} mt={5}>
           <Button variant="contained" size="small" sx={ { textAlign: 'center' } } >
             <AddShoppingCartOutlined fontSize="small" sx={ { pr: 1 } } />
-            Buy Now
+            Add To Cart
           </Button>
         </Box>
 

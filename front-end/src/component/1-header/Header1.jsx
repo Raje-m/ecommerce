@@ -15,6 +15,7 @@ const options = [
 
 export default function Header1 ()
 {
+  // for dark mode 
   const colorMode = useContext( ColorModeContext );
   const theme = useTheme();
 
@@ -22,6 +23,7 @@ export default function Header1 ()
   const [ anchorEl, setAnchorEl ] = useState( null );
   const [ selectedIndex, setSelectedIndex ] = useState( 1 );
   const open = Boolean( anchorEl );
+  
   const handleClickListItem = ( event ) =>
   {
     setAnchorEl( event.currentTarget );

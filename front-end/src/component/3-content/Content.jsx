@@ -1,14 +1,23 @@
 import { useTheme } from '@emotion/react';
 import { AddShoppingCartOutlined, Close } from '@mui/icons-material';
-import { Box, Button, Card, CardActions, CardContent, Container, Dialog, IconButton, Rating, Stack, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Container, Dialog, IconButton, Rating, Stack, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from '@mui/material'
 import { useState } from 'react'
 import CardDetails from './CardDetails';
 import { useGetProductByNameQuery } from '../../redux/fetchProducts';
 import LinerProgress from '../LinerProgress';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, } from '../../redux/cartSlice';
+import GoTo from '../GoTo';
 
 export default function Content ()
 {
-
+  const dispatch = useDispatch()
+  const cartData = useSelector( state => state.cartSlice.productInCart )
+  if ( cartData )
+  {
+    console.log( cartData.length==0);
+  }
+  // for filter products 
   const jeweleryProduct = `/category/jewelery`
   const allProduct = ''
   const electronicsProduct = `/category/electronics`
@@ -16,6 +25,7 @@ export default function Content ()
   const menProduct = `/category/men's clothing`
 
   const [ category, setCategory ] = useState( '' );
+  // get data from api 
   const { data, error, isLoading } = useGetProductByNameQuery( category )
   if ( error )
   {
@@ -31,7 +41,6 @@ export default function Content ()
     if ( tapClicked !== null )
     {
       setCategory( tapClicked );
-      // setAlignment( newAlignment );
     }
 
   };
@@ -45,6 +54,11 @@ export default function Content ()
     descAfter = descAfter.length > 19 ? descAfter.slice( 0, 20 ) : descAfter
 
     return descAfter.join( ' ' )
+  }
+  //add to cart
+  function addProductToCart ( ele ) 
+  {
+    dispatch( addToCart( ele ) )
   }
 
   return (
@@ -60,7 +74,7 @@ export default function Content ()
           exclusive
           onChange={ handleAlignment }
           aria-label="text alignment"
-          sx={{display:'flex',justifyContent:'center',alignItems:'center',flexWrap:'wrap ', gap:1,}}
+          sx={ { display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap ', gap: 1, } }
         >
           <ToggleButton className='toggleEle' value={ allProduct } sx={ { color: theme.palette.text.primary } } aria-label="left aligned" >
             All Products
@@ -81,41 +95,42 @@ export default function Content ()
         </ToggleButtonGroup>
       </Stack>
       <Stack direction={ 'row' } gap={ 2 } alignItems={ 'center' } flexWrap={ 'wrap' } flexGrow={ 1 } justifyContent={ 'space-around' } my={ 5 }  >
-      
+
+        {/* //products from api to card   */ }
         { isLoading ? (
-          <LinerProgress/>
+          <LinerProgress />
         ) : data && data.map( ele =>
         {
           return (
-            <Card key={ ele.id } sx={ { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflowY: 'auto', maxWidth: 333, maxHeight: '550px', minHeight: '550px', transition: 'all .9s', ':hover .cardImg': { scale: '1.1', rotate: '5deg', transition: '.5s' } } }>
+            <Card key={ ele.id } sx={ { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflowY: 'auto', maxWidth: 333, maxHeight: '550px', minHeight: '550px', transition: 'all .9s', ':hover .cardImg': { scale: '1.05', rotate: '3deg', transition: '.5s' } } }>
+              <CardActionArea onClick={ () => { setIsOpen( true ), setItemSelect( ele ) } }>
+                <Box display={ 'flex' } alignItems={ 'center' } justifyContent={ 'center' } p={ 1 }>
+                  <img className='cardImg' height={ '277px' } width={ '100%' } src={ ele.image } />
+                </Box>
 
-              <Box display={ 'flex' } alignItems={ 'center' } justifyContent={ 'center' } p={ 1 }>
-                <img className='cardImg' height={ '277px' } width={ '100%' } src={ ele.image } />
-              </Box>
+                <CardContent   >
+                  <Stack direction={ 'row' } alignItems={ 'center' } justifyContent={ 'space-between' }>
+                    <Typography variant="h6" lineHeight={ 1.1 } component="div">
+                      { ele.title }
+                    </Typography>
+                    <Typography variant='subtitle1' component={ 'p' }>
+                      { ele.price }$
+                    </Typography>
 
-              <CardContent   >
-              
-
-                <Stack direction={ 'row' } alignItems={ 'center' } justifyContent={ 'space-between' }>
-                  <Typography variant="h6" lineHeight={ 1.1 } component="div">
-                    { ele.title }
-                  </Typography>
-                  <Typography variant='subtitle1' component={ 'p' }>
-                    { ele.price }$
-                  </Typography>
-
-                </Stack>
-                <Tooltip title={ ele.description }>
-                  <Typography variant="body2" sx={ { color: 'text.secondary' } }>
-                    { descAfterHideSomeText( ele.description ) }
-                  </Typography>
-                </ Tooltip >
-                <Typography flexGrow={ 1 }></Typography>
+                  </Stack>
+                  <Tooltip title={ ele.description }>
+                    <Typography variant="body2" sx={ { color: 'text.secondary' } }>
+                      { descAfterHideSomeText( ele.description ) }
+                    </Typography>
+                  </ Tooltip >
+                  <Typography flexGrow={ 1 }></Typography>
 
 
-              </CardContent>
+                </CardContent>
+              </CardActionArea>
               <CardActions sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }>
-                <Button size="medium" onClick={ () => { setIsOpen( true ), setItemSelect( ele ) } }><AddShoppingCartOutlined fontSize='small' sx={ { mr: 1 } } /> Add To Cart</Button>
+                <Button size="medium" onClick={ () => addProductToCart( ele ) } ><AddShoppingCartOutlined fontSize='small' sx={ { mr: 1 } } /> Add To Cart</Button>
+
                 <Rating name="read-only" value={ ele.rating.rate } precision={ 0.1 } readOnly />
 
               </CardActions>
@@ -140,6 +155,10 @@ export default function Content ()
 
       </Dialog>
       {/* dialog for product Details  */ }
+      {/* if cart not empty show button to go to cart */ }
+
+      { cartData &&cartData.length!==0&& <GoTo to={ 'cart' } /> }
+
     </Container>
   )
 }
