@@ -16,6 +16,7 @@ export default function Header2 ()
     padding: '0 4px',
   },
   } ) );
+  
   const eleToCart = useSelector( state => state.cartSlice.productInCart )
   const theme = useTheme()
   const navigate=useNavigate()

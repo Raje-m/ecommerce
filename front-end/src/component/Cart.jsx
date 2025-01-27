@@ -1,7 +1,6 @@
 import { Box, Button, Container, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAll, delFromCart } from "../redux/cartSlice";
-import GoToHome from "./GoTo";
 import GoTo from "./GoTo";
 const StyledTableCell = styled( TableCell )( ( { theme } ) => ( {
   [ `&.${ tableCellClasses.head }` ]: {
